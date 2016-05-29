@@ -1,0 +1,128 @@
+---
+    base : &base
+        jdbc.read.url: jdbc:mysql://ec2-54-251-97-209.ap-southeast-1.compute.amazonaws.com/myntra_silkroute
+        jdbc.read.username: root
+        jdbc.read.password: "xpertscan"
+        jdbc.read.maxConnections: 1
+        jdbc.write.url: jdbc:mysql://ec2-54-251-97-209.ap-southeast-1.compute.amazonaws.com/myntra_silkroute
+        jdbc.write.username: root
+        jdbc.write.password: "xpertscan"
+        jdbc.write.maxConnections: 1
+        rollback.jdbc.maxConnections: 1
+        rollback.jdbc.url: jdbc:mysql://ec2-54-251-97-209.ap-southeast-1.compute.amazonaws.com/myntra_rollback
+        rollback.jdbc.username: root
+        rollback.jdbc.password: "xpertscan"
+
+        # StatsD properties
+        statsd.server: 127.0.0.1
+        statsd.port: 8125
+        statsd.enabled: "true"
+        statsd.env: erp
+        statsd.application: silkroute
+
+        # service urls properties
+        atpURL: http://localhost:7012/myntra-atp-service/
+        toolsURL: http://localhost:7009/myntra-tools-service/
+        omsURL: http://localhost:7030/myntra-oms-service/
+        bountyURL: http://localhost:7033/myntra-bounty-service/
+        wmsURL: http://localhost:7007/myntra-wms-service/
+        productOptionUrl: http://qa1catalog.myntra.com/myntra-catalog-service/
+        
+        #JAVA_OPTS
+        java.opts: -Xms256m -Xmx512m -XX:MaxPermSize=512m -Dorg.apache.cxf.Logger=org.apache.cxf.common.logging.Log4jLogger  -Djavamelody.http-transform-pattern='\d+' -Djavamelody.storage-directory=/myntra/silkroute/service/releases/javamelody/
+        
+        #queue config
+        queueLocation: localhost
+
+    local: &local
+        << : *base
+        atpURL: http://54.251.103.6:7012/myntra-atp-service/
+        toolsURL: http://54.251.103.6:7009/myntra-tools-service/
+        omsURL: http://54.251.103.6:7030/myntra-oms-service/
+        bountyURL: http://54.251.103.6:7033/myntra-bounty-service/
+        wmsURL: http://54.251.103.6:7007/myntra-wms-service/
+        productOptionUrl: http://qa1catalog.myntra.com/myntra-catalog-service/
+
+
+    qa: &qa
+        << : *base
+        # JDBC Properties    
+        jdbc.read.url: jdbc:mysql://qa1db2.myntra.com:3307/myntra_silkroute
+        jdbc.read.username: myntraAppDBUser
+        jdbc.read.password: 9eguCrustuBR
+        jdbc.read.maxConnections: 10
+        jdbc.write.url: jdbc:mysql://qa1db2.myntra.com:3307/myntra_silkroute
+        jdbc.write.username: myntraAppDBUser
+        jdbc.write.password: 9eguCrustuBR
+        jdbc.write.maxConnections: 10
+        rollback.jdbc.url: jdbc:mysql://qa1db1.myntra.com:3307/myntra_rollback
+        rollback.jdbc.username: myntraAppDBUser
+        rollback.jdbc.password: 9eguCrustuBR
+
+        atpURL: http://qa1atp.myntra.com:7012/myntra-atp-service/
+        toolsURL: http://qa1erpplatformservices.myntra.com:7009/myntra-tools-service/
+        omsURL: http://qa1oms.myntra.com:7030/myntra-oms-service/
+        bountyURL: http://qa1bounty.myntra.com:7033/myntra-bounty-service/
+        wmsURL: http://qa1wms.myntra.com:7007/myntra-wms-service/
+        productOptionUrl: http://qa1catalog.myntra.com/myntra-catalog-service/
+
+
+        #JAVA_OPTS
+        java.opts: -Xms256m -Xmx256m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/myntra/silkroute/service/releases/current/heapdump/ -XX:MaxPermSize=256m -Dspring.profiles.active=qa -Dorg.apache.cxf.Logger=org.apache.cxf.common.logging.Log4jLogger  -Djavamelody.http-transform-pattern='\d+' -Djavamelody.storage-directory=/myntra/silkroute/service/releases/javamelody/
+
+    devint: &devint
+        << : *qa
+        queueLocation: qa1erprabbitmq.myntra.com
+        omsURL: http://d1oms/myntra-oms-service/
+
+    stg: &stg
+        << : *base
+        statsd.server: 10.131.15.233
+        
+        rollback.jdbc.url: jdbc:mysql://delta7mdb.myntra.com:3307/myntra_rollback
+        rollback.jdbc.username: myntraAppDBUser
+        rollback.jdbc.password: 9eguCrustuBR
+
+        #JAVA_OPTS
+        java.opts: -Xms512m -Xmx512m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/myntra/silkroute/service/current/heapdump/ -XX:MaxPermSize=256m -Dspring.profiles.active=stg -Dorg.apache.cxf.Logger=org.apache.cxf.common.logging.Log4jLogger  -Djavamelody.http-transform-pattern='\d+' -Djavamelody.storage-directory=/myntra/silkroute/service/releases/javamelody/
+        queueLocation: rabbitmqerp
+
+    prod1 : &prod
+        << : *base
+        statsd.server: statsd.myntra.com
+
+        # JDBC Properties    
+        rollback.jdbc.url: jdbc:mysql://emdb1.myntra.com:3306/myntra_rollback
+        rollback.jdbc.username: myntraAppDBUser
+        rollback.jdbc.password: 9eguCrustuBR
+
+        toolsURL: http://erptools.myntra.com/myntra-tools-service/
+        omsURL: http://erpoms.myntra.com/myntra-oms-service/
+        productOptionUrl: http://catalogservice.myntra.com/myntra-catalog-service/
+
+
+        #JAVA_OPTS
+        java.opts: -Xms4096m -Xmx4096m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/myntra/silkroute/service/current/heapdump/ -XX:MaxPermSize=256m -Dspring.profiles.active=prod -Dorg.apache.cxf.Logger=org.apache.cxf.common.logging.Log4jLogger  -Djavamelody.http-transform-pattern='\d+' -Djavamelody.storage-directory=/myntra/silkroute/service/releases/javamelody/ -javaagent:/myntra/silkroute/service/releases/newrelic/newrelic.jar
+
+    prod2 : &prod2
+        << : *prod
+        #JAVA_OPTS
+        java.opts: -Xms4096m -Xmx4096m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/myntra/silkroute/service/current/heapdump/ -XX:MaxPermSize=256m -Dspring.profiles.active=prod -Dorg.apache.cxf.Logger=org.apache.cxf.common.logging.Log4jLogger  -Djavamelody.http-transform-pattern='\d+' -Djavamelody.storage-directory=/myntra/silkroute/service/releases/javamelody
+
+    perf : &perf
+        << : *base
+        statsd.server: perf-statsd.myntra.com
+        statsd.enabled: "true"
+
+        # JDBC Properties
+        rollback.jdbc.url: jdbc:mysql://perf-emdb1.myntra.com:3306/myntra_rollback
+        rollback.jdbc.username: myntraPerfDBUser
+        rollback.jdbc.password: 2mynCust2nPR2!
+
+        toolsURL: http://erptools.myntra.com/myntra-tools-service/
+        omsURL: http://erpoms.myntra.com/myntra-oms-service/
+        productOptionUrl: http://catalogservice.myntra.com/myntra-catalog-service/
+
+
+        # JAVA_OPTS
+        java.opts: -Xms4096m -Xmx4096m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/myntra/silkroute/service/current/heapdump/ -XX:MaxPermSize=256m -Dspring.profiles.active=perf -Dorg.apache.cxf.Logger=org.apache.cxf.common.logging.Log4jLogger  -Djavamelody.http-transform-pattern='\d+' -Djavamelody.storage-directory=/myntra/silkroute/service/releases/javamelody/
