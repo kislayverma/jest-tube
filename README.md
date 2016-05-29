@@ -1,7 +1,7 @@
 # jest-tube
 This is a test tube repository for my experiments in Java. 
 
-## Spring deferred result based reverse proxy
+## Spring DeferredResult based reverse proxy
 This is an effort to build a non-blocking, scalable reverse proxy using Spring 3's DeferredResult construct. As of now this works but I have not yet benchmarked it fully.
 
 ## Apache OpenNLP based text classifier
