@@ -1,4 +1,0 @@
-export CATALINA_PID="/myntra/pid/silkroute.pid"
-export JRE_HOME=/usr/java/java7/
-export JAVA_OPTS="{{java.opts}}"
-

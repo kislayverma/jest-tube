@@ -1,5 +1,0 @@
-statsd.server={{statsd.server}}
-statsd.port={{statsd.port}}
-statsd.enabled=true
-statsd.env="erp"
-statsd.application="silkroute"

@@ -1,5 +1,0 @@
-jdbc.driver=com.mysql.jdbc.Driver
-jdbc.url={{rollback.jdbc.url}}
-jdbc.user={{rollback.jdbc.username}}
-jdbc.password={{rollback.jdbc.password}}
-jdbc.maxConnections={{rollback.jdbc.maxConnections}}
