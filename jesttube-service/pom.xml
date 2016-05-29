@@ -3,25 +3,15 @@
 
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.kislay</groupId>
+        <groupId>com.github.kislayverma</groupId>
         <artifactId>jesttube</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
+    <groupId>com.github.kislayverma.jesttube</groupId>
     <artifactId>jesttube-service</artifactId>
     <packaging>war</packaging>
     <name>jesttube-service</name>
-
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <package.number>${maven.build.timestamp}</package.number>
-        <rpm.name>jesttube-service</rpm.name>
-        <app.home>/myntra/router/service/releases</app.home>
-        <maven.integrationtest.skip>true</maven.integrationtest.skip>
-        <maven.build.timestamp.format>yyyyMMddHHmm</maven.build.timestamp.format>
-        <maven.pmd.skip>false</maven.pmd.skip>
-        <powermock.version>1.6.2</powermock.version>
-    </properties>
 
     <dependencies>
         <dependency>
@@ -68,216 +58,13 @@
                 <configuration>
                     <source>1.7</source>
                     <target>1.7</target>
-                    <showDeprecation>true</showDeprecation>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>2.5</version>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jxr-plugin</artifactId>
-                <version>2.4</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>jxr</goal>
-                        </goals>
-                        <phase>verify</phase>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>2.6</version>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-pmd-plugin</artifactId>
-                <version>2.6</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                        <phase>verify</phase>
-                    </execution>
-                </executions>
-                <configuration>
-                    <linkXref>true</linkXref>
-                    <sourceEncoding>utf-8</sourceEncoding>
-                    <minimumTokens>100</minimumTokens>
-                    <targetJdk>1.7</targetJdk>
-                    <failOnViolation>false</failOnViolation>
-                    <failurePriority>2</failurePriority>
-                    <rulesets>
-                        <ruleset>rulesets/basic.xml</ruleset>
-                        <ruleset>rulesets/unusedcode.xml</ruleset>
-                        <ruleset>rulesets/design.xml</ruleset>
-                        <ruleset>rulesets/imports.xml</ruleset>
-                        <ruleset>rulesets/junit.xml</ruleset>
-                        <ruleset>rulesets/strings.xml</ruleset>
-                        <ruleset>rulesets/braces.xml</ruleset>
-                        <ruleset>rulesets/codesize.xml</ruleset>
-                        <ruleset>rulesets/javabeans.xml</ruleset>
-                        <ruleset>rulesets/coupling.xml</ruleset>
-                        <ruleset>rulesets/strictexception.xml</ruleset>
-                        <ruleset>rulesets/controversial.xml</ruleset>
-                        <ruleset>rulesets/typeresolution.xml</ruleset>
-                        <ruleset>rulesets/logging-java.xml</ruleset>
-                        <ruleset>rulesets/migrating.xml</ruleset>
-                        <ruleset>rulesets/optimizations.xml</ruleset>
-                        <ruleset>rulesets/javabeans.xml</ruleset>
-                        <ruleset>rulesets/clone.xml</ruleset>
-                    </rulesets>
-                    <skip>${maven.pmd.skip}</skip>
-                </configuration>
-            </plugin>
-            <plugin>
-                <artifactId>exec-maven-plugin</artifactId>
-                <groupId>org.codehaus.mojo</groupId>
-                <version>1.2.1</version>
-                <executions>
-                    <execution>
-                        <id>Creating Services File</id>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                        <configuration>
-                            <commandlineArgs>
-                                ${basedir}
-                            </commandlineArgs>
-                            <executable>${basedir}/src/main/tomcatconf/bin/createProperties.sh</executable>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>rpm-maven-plugin</artifactId>
-                <version>2.1-alpha-2</version>
-                <executions>
-                    <execution>
-                        <id>0</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>attached-rpm</goal>
-                        </goals>
-                        <configuration>
-                            <name>${rpm.name}-ops</name>
-                            <version>${project.version}-${maven.build.timestamp}</version>
-                            <copyright>2015, Kislay Verma</copyright>
-                            <group>Applications/Programming</group>
-                            <description>JestTube Service config: RPM Package</description>
-                            <autoProvides>No</autoProvides>
-                            <autoRequires>No</autoRequires>
-                            <mappings>
-                                <mapping>
-                                    <directory>${app.home}/${project.version}_${maven.build.timestamp}_1/profiles</directory>
-                                    <filemode>755</filemode>
-                                    <username>myntra</username>
-                                    <groupname>myntra</groupname>
-                                    <sources>
-                                        <source>
-                                            <location>src/main/tomcatconf/profiles</location>
-                                        </source>
-                                    </sources>
-                                </mapping>
-                                <mapping>
-                                    <directory>${app.home}/${project.version}_${maven.build.timestamp}_1/scripts</directory>
-                                    <filemode>755</filemode>
-                                    <username>myntra</username>
-                                    <groupname>myntra</groupname>
-                                    <sources>
-                                        <source>
-                                            <location>src/main/tomcatconf/scripts</location>
-                                        </source>
-                                    </sources>
-                                </mapping>
-                            </mappings>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>1</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>rpm</goal>
-                        </goals>
-
-                        <configuration>
-                            <name>${rpm.name}-app</name>
-                            <version>${project.version}-${maven.build.timestamp}</version>
-                            <copyright>2015, Kislay Verma</copyright>
-                            <group>Applications/Programming</group>
-                            <description>Router: RPM Package</description>
-                            <mappings>
-                                <mapping>
-                                    <directory>${app.home}/${project.version}_${maven.build.timestamp}_1/bin</directory>
-                                    <filemode>755</filemode>
-                                    <username>myntra</username>
-                                    <groupname>myntra</groupname>
-                                    <sources>
-                                        <source>
-                                            <location>src/main/tomcatconf/bin</location>
-                                            <excludes>
-                                                <exclude>
-                                                    createProperties.sh
-                                                </exclude>
-                                            </excludes>
-                                        </source>
-                                    </sources>
-                                </mapping>
-                                <mapping>
-                                    <directory>${app.home}/${project.version}_${maven.build.timestamp}_1/jesttube-tomcat/webapps</directory>
-                                    <sources>
-                                        <source>
-                                            <location>${project.build.outputDirectory}/../jesttube-service.war</location>
-                                        </source>
-                                    </sources>
-                                </mapping>
-                                <mapping>
-                                    <directory>${app.home}/${project.version}_${maven.build.timestamp}_1/jesttube-tomcat/bin</directory>
-                                    <filemode>755</filemode>
-                                    <username>myntra</username>
-                                    <groupname>myntra</groupname>
-                                    <sources>
-                                        <source>
-                                            <location>src/main/tomcatconf/jesttube-bin</location>
-                                        </source>
-                                    </sources>
-                                </mapping>
-                                <mapping>
-                                    <directory>${app.home}/${project.version}_${maven.build.timestamp}_1/jesttube-tomcat/conf</directory>
-                                    <filemode>755</filemode>
-                                    <username>myntra</username>
-                                    <groupname>myntra</groupname>
-                                    <sources>
-                                        <source>
-                                            <location>src/main/tomcatconf/conf</location>
-                                        </source>
-                                    </sources>
-                                </mapping>
-                            </mappings>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
     </build>
-    <repositories>
-        <repository>
-            <id>central</id>
-            <url>http://repo1.maven.org/maven2/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
 </project>

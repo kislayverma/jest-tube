@@ -5,8 +5,8 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
          id="WebApp_ID" version="3.0">
 
-    <display-name>Router</display-name>
-    <description>Order creation service for external stores</description>
+    <display-name>JestTube Service</display-name>
+    <description>Deploying the experiments in jesttube</description>
 
     <context-param>
         <param-name>contextConfigLocation</param-name>
@@ -14,12 +14,6 @@
     </context-param>
 
     <!-- Spring listeners -->
-<!--    <listener>
-        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-    </listener>
-    <listener>
-        <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
-    </listener>-->
     <servlet>
         <servlet-name>router</servlet-name>
         <async-supported>true</async-supported>
